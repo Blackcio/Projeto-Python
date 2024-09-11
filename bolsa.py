@@ -1,31 +1,13 @@
-import tkinter as tk
 import yfinance as yf
-import time
 
-# Função para obter a cotação atual da PETR4
-def obter_cotacao():
-    ticker = "PETR4.SA"
-    dados = yf.Ticker(ticker)
-    preco_atual = dados.history(period="1d")['Close'].iloc[0]
-    return preco_atual
+# Define o ticker da Petrobras (PETR4)
+ticker = "PETR4.SA"
 
-# Função para atualizar a cotação na interface
-def atualizar_cotacao():
-    preco_atual = obter_cotacao()
-    label_cotacao.config(text=f"Cotação atual da PETR4: R$ {preco_atual:.2f}")
-    # Atualiza a cada 5 segundos (5000 milissegundos)
-    janela.after(5000, atualizar_cotacao)
+# Obtém os dados da ação
+dados = yf.Ticker(ticker)
 
-# Cria a janela principal
-janela = tk.Tk()
-janela.title("Cotação PETR4 em Tempo Real")
+# Pega a última cotação (preço atual), acessando via iloc para evitar o FutureWarning
+preco_atual = dados.history(period="1d")['Close'].iloc[0]
 
-# Cria um label para exibir a cotação
-label_cotacao = tk.Label(janela, text="Carregando cotação...", font=("Arial", 20))
-label_cotacao.pack(pady=20)
-
-# Inicia a atualização da cotação
-atualizar_cotacao()
-
-# Executa a janela do Tkinter
-janela.mainloop()
+# Exibe o preço
+print(f"A cotação atual da PETR4 é: R$ {preco_atual:.2f}")
